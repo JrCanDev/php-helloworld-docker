@@ -39,7 +39,7 @@ Open your browser on : http://localhost:8880/
 
 ## result 
 
-![result in browser](./img/resul.png)
+![result in browser](./img/result.png)
 
 ## stop the container
 
