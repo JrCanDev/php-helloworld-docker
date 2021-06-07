@@ -25,10 +25,27 @@ php-test                   latest            be8436ad762b   57 seconds ago   368
 ## Run the application
 
 ```
-docker run -p 8880:80 --name my_container -d php-test 
+docker run -p 8880:80 --rm --name my_container -d php-test 
+```
+
+Note: the --rm option will destroy the container when you will stop it.
+
+Check your docker is running
+```
+docker ps
 ```
 
 Open your browser on : http://localhost:8880/
+
+## result 
+
+![result in browser](./img/resul.png)
+
+## stop the container
+
+```
+docker stop my_container
+```
 
 ## build and run with docker-compose
 
