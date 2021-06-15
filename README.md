@@ -47,7 +47,7 @@ Open your browser on : http://localhost:8880/
 docker stop my_container
 ```
 
-## build and run with docker-compose
+## build and run with docker-compose with Traefik
 
 ```
 docker-compose up -d
