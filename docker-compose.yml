@@ -1,8 +1,22 @@
-version: "3.1"
+# /apps/blog.silarhi.fr/docker-compose.yml
+version: '3'
+
 services:
-    web:
-        container_name: my_container
-        build: .
-        ports:
-            - "8880:80"
-        
+  app:
+    image: ghost:4-alpine
+    container_name: jrcan
+    build: .
+    networks:
+        - web
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jrcan.rule=Host(`jrcan.dev.netlib.re`)"
+        - "traefik.http.routers.jrcan.entrypoints=websecure"
+    restart: always
+
+volumes:
+  content:
+
+networks:
+  web:
+    external: true
