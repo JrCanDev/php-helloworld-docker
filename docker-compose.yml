@@ -6,7 +6,6 @@ services:
     image: mariadb:10.1.26 
     ports:
       - "3306:3306"
-    MYSQL_ROOT_PASSWORD: {{ secrets.MYSQL_ROOT_PASSWORD }}
   app:
     image: ghost:4-alpine
     container_name: jrcan
