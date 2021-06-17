@@ -5,7 +5,7 @@ on:
     # Sequence of patterns matched against refs/tags
     tags:
       - 'v*'
-
+jobs:
   redeploy:
       name: Redeploy - Webhook call
       runs-on: ubuntu-18.04
