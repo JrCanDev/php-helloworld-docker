@@ -4,14 +4,15 @@ version: '3'
 services:
   app:
     image: ghost:4-alpine
-    container_name: jrcan
+    container_name: test
     build: .
     networks:
         - web
     labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.jrcan.rule=Host(`jrcan.dev.netlib.re`)"
-        - "traefik.http.routers.jrcan.entrypoints=websecure"
+        - "traefik.http.routers.test.rule=Host(`test.dev.netlib.re`)"
+        - "traefik.http.routers.test.entrypoints=websecure"
+        - "traefik.http.routers.test.tls.certresolver=lets-encrypt"
     restart: always
 
 volumes:
@@ -20,5 +21,3 @@ volumes:
 networks:
   web:
     external: true
-
-    
