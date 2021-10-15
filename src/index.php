@@ -10,7 +10,7 @@ print_r($_ENV);
 echo '<p>DB_HOST</p>';
 var_dump($_ENV['DB_HOST']);
 
-$db = mysqli_connect('db', 'test', '1234567abc', 'testdb');
+$db = mysqli_connect('database', 'test', '1234567abc', 'testdb');
 
 var_dump($db);
 

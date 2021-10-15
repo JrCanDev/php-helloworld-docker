@@ -29,6 +29,15 @@ services:
     restart: always
     environment:
       DB_HOST: database
+    
+      # see https://ghost.org/docs/config/#configuration-options
+      database__client: mysql
+      database__connection__host: database
+      database__connection__user: 'test'
+      database__connection__password: '1234567abc'
+      database__connection__database: 'testdb'
+      url: https://tecoblog.ddns.net
+      NODE_ENV: production
 
 networks:
   web:
