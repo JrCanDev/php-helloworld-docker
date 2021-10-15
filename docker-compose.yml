@@ -1,22 +1,35 @@
-# /apps/blog.silarhi.fr/docker-compose.yml
 version: '3'
 
 services:
+
+  database:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: '1234567abc'
+      MYSQL_DATABASE: 'testdb'
+      MYSQL_USER: 'test'
+      MYSQL_PASSWORD: '1234567abc'
+    networks:
+      - lan 
+    # volumes: 
+    #   - db:/var/lib/mysql
+
   app:
     image: ghost:4-alpine
     container_name: ${NAME}
     build: .
     networks:
         - web
+        - lan
     labels:
         - "traefik.enable=true"
         - "traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)"
         - "traefik.http.routers.${NAME}.entrypoints=websecure"
         - "traefik.http.routers.${NAME}.tls.certresolver=lets-encrypt"
     restart: always
-
-volumes:
-  content:
+    environment:
+      DB_HOST: database
 
 networks:
   web:
