@@ -10,7 +10,14 @@ print_r($_ENV);
 echo '<p>DB_HOST</p>';
 var_dump($_ENV['DB_HOST']);
 
-$db = mysql_connect('database', 'test', '1234567abc', 'testdb');
+
+$mysqlnd = function_exists('mysqli_fetch_all');
+
+if ($mysqlnd) {
+    echo 'mysqlnd enabled!';
+}
+
+// $db = mysql_connect('database', 'test', '1234567abc', 'testdb');
 
 var_dump($db);
 
