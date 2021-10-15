@@ -11,7 +11,7 @@ services:
       MYSQL_USER: 'test'
       MYSQL_PASSWORD: '1234567abc'
     networks:
-      - web
+      - lan
     volumes: 
       - db:/var/lib/mysql
 
@@ -21,6 +21,7 @@ services:
     build: .
     networks:
         - web
+        - lan
     labels:
         - "traefik.enable=true"
         - "traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)"
@@ -42,6 +43,8 @@ services:
 networks:
   web:
     external: true
+  lan:
+    internal: true
 
 volumes:
   db: {}
