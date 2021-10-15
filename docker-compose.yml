@@ -33,3 +33,6 @@ services:
 networks:
   web:
     external: true
+
+volumes:
+  db: {}
