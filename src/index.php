@@ -17,7 +17,7 @@ if ($mysqlnd) {
     echo 'mysqlnd enabled!';
 }
 
-// $db = mysql_connect('database', 'test', '1234567abc', 'testdb');
+$db = mysqli_connect('database', 'test', '1234567abc', 'testdb');
 
 var_dump($db);
 
