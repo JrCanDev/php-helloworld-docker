@@ -1,25 +1,53 @@
 <?php
-
-echo 'Hello from <a href="https://jrcan.dev.netlib.re/">JrCanDev</a> <br>';
-echo '<img src="https://www.docker.com/sites/default/files/horizontal.png">';
-echo '<p>update : 05 oct. 2021 </p>';
+// $db = mysqli_connect('database', 'test', '1234567abc', 'testdb') or die('Could not find a database server @\'database\'');
+$pdo = new PDO('mysql:host=database;dbname=testdb', 'test', '1234567abc', array( PDO::ATTR_PERSISTENT => false)) or die('cannot instantiate PDO instance');
 
 
-echo '<p>$_ENV</p>';
-print_r($_ENV);
-echo '<p>DB_HOST</p>';
-var_dump($_ENV['DB_HOST']);
+$sql = "CREATE TABLE IF NOT EXISTS Data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    some_string varchar(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); ENGINE=INNODB";
 
+$pdo->exec($sql);
 
-$mysqlnd = function_exists('mysqli_fetch_all');
-
-if ($mysqlnd) {
-    echo 'mysqlnd enabled!';
+$stmt = $pdo->prepare('SELECT * FROM Data');
+$stmt->execute(array());
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if (count($results) == 0)  {
+    $sql = "INSERT INTO Data(some_string) values 'Hello MySQL'";
+    $pdo->exec($sql);
+    $stmt = $pdo->prepare('SELECT * FROM Data');
+    $res = $stmt->execute(array());
 }
 
-$db = mysqli_connect('database', 'test', '1234567abc', 'testdb');
+$rows = '';
 
-var_dump($db);
+foreach($results as $key => $value) {
+    $row .= "<p><strong>$key</strong> {$_value['some_string']}</p>";
+    $rows[] = $row;
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>JrCanDev PHP + MySQL Test</title>
+    </head>
+    <body>
+        <p>Hello from <a href="https://jrcan.dev.netlib.re/">JrCanDev</a></p>
+        <p><img src="https://www.docker.com/sites/default/files/horizontal.png"></p>
+
+        <?= $rows ?>
+    </body>
+</html>
+
+
+<?php
+
+
+
 
 ?>
 
