@@ -49,7 +49,7 @@ $rows .= '</table>';
     <head>
         <meta charset="utf-8">
         <title>JrCanDev PHP + MySQL Test</title>
-        <link rel="stylesheet" href="img/style.css">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body class="bg4">
         <div class="container">
