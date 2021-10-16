@@ -10,7 +10,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: 'testdb'
       MYSQL_USER: 'test'
-      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysql-password'
     secrets:
       - mysql-password  
     networks:
@@ -38,10 +38,14 @@ services:
       database__client: mysql
       database__connection__host: database
       database__connection__user: 'test'
-      database__connection__password: ${{ secrets.MYSQL_PASSWORD }}
+      database__connection__password: MYSQL_PASSWORD_FILE
       database__connection__database: 'testdb'
       url: https://tecoblog.ddns.net
       NODE_ENV: production
+
+secrets:
+  mysql-password:
+    file: ./secrets_mysql-password.txt      
 
 networks:
   web:
