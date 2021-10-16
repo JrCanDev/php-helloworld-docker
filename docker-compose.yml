@@ -10,7 +10,9 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: 'testdb'
       MYSQL_USER: 'test'
-      MYSQL_PASSWORD: '/run/secrets/mysql-password'
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+    secrets:
+      - mysql-password  
     networks:
       - lan
     volumes: 
@@ -36,7 +38,7 @@ services:
       database__client: mysql
       database__connection__host: database
       database__connection__user: 'test'
-      database__connection__password: '1234567abc'
+      database__connection__password: ${{ secrets.MYSQL_PASSWORD }}
       database__connection__database: 'testdb'
       url: https://tecoblog.ddns.net
       NODE_ENV: production
