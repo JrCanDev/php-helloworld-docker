@@ -2,32 +2,43 @@
 // $db = mysqli_connect('database', 'test', '1234567abc', 'testdb') or die('Could not find a database server @\'database\'');
 $pdo = new PDO('mysql:host=database;port=3306;dbname=testdb', 'test', '1234567abc') or die('cannot instantiate PDO instance');
 
-
 $sql = "CREATE TABLE IF NOT EXISTS Data (
     id INT AUTO_INCREMENT PRIMARY KEY,
     some_string varchar(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); ENGINE=INNODB";
+$pdo->exec($sql);
 
-$result1 = $pdo->exec($sql);
-
-
-$n = 0;
-$stmt = $pdo->prepare('SELECT * FROM Data');
-$results2 = $stmt->execute(array());
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$amount = count($results);
-if (count($results) == 0) {
-    $sql = "INSERT INTO Data(some_string) values ('Hello MySQL')";
-    $n = $pdo->exec($sql);
+// INSERT
+if (isset($_POST['message'])) {
     $stmt = $pdo->prepare('SELECT * FROM Data');
     $stmt->execute(array());
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (count($results) < 15) {
+        $sql = "INSERT INTO Data(some_string) values (:message)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array('message' => $_POST['message']));
+    }
 }
 
-$rows = '<table>';
+// UPDATE
+if (isset($_GET['remove']) && isset($_GET['id'])) {
+    $sql = "DELETE FROM Data WHERE id=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array('id' => $_GET['id']));
+}
 
+
+// GET Data
+$stmt = $pdo->prepare('SELECT * FROM Data');
+$stmt->execute(array());
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Format Data
+$rows = '<table>';
 foreach($results as $key => $value) {
-    $rows .= "<tr><th> $key </th><td> {$value['some_string']} </td><td> {$value['created_at']} </td></tr>";
+    $rows .= "<tr><th> {$value['id']} </th><td> {$value['some_string']} </td><td> {$value['created_at']} </td>";
+    $rows .= '<td class="remove"><a href="?remove&id=' . $value['id'] . '">❌</a></td>';
+    $rows .= '</tr>';
 }
 $rows .= '</table>';
 
@@ -38,12 +49,28 @@ $rows .= '</table>';
     <head>
         <meta charset="utf-8">
         <title>JrCanDev PHP + MySQL Test</title>
+        <link rel="stylesheet" href="img/style.css">
     </head>
-    <body>
-        <p>Hello from <a href="https://jrcan.dev.netlib.re/">JrCanDev</a></p>
-        <p><img src="https://www.docker.com/sites/default/files/horizontal.png"></p>
-
-        <?= $rows ?>
+    <body class="bg4">
+        <div class="container">
+        <div class="title">
+            <p><a href="https://jrcan.dev.netlib.re/"><img src="img/logo_JrCanDev.svg"></a></p>
+        </div>
+        <div class="main-container">
+            <div>
+            <?= $rows ?>
+            </div>
+            <div>
+                <form action ="#" method="POST" class="message_form">
+                <fieldset>
+                    <legend>Add one</legend>
+                    <label for id="input_some_string">Message:</label> 
+                    <input type="text" name="message">
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
     </body>
 </html>
 
