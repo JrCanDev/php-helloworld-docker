@@ -4,4 +4,5 @@ RUN docker-php-ext-install mysqli pdo_mysql
 #     && apt-get install -y php7.0-mysql\
 #     && docker-php-ext-install mysqli pdo_mysql
 COPY src/ /var/www/html
+COPY src/ /var/www/html
 EXPOSE 80
