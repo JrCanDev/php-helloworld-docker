@@ -11,14 +11,14 @@ $sql = "CREATE TABLE IF NOT EXISTS Data (
 $result1 = $pdo->exec($sql);
 
 
-
+$n = 0;
 $stmt = $pdo->prepare('SELECT * FROM Data');
 $results2 = $stmt->execute(array());
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $amount = count($results);
 if (count($results) == 0) {
     $sql = "INSERT INTO Data values 'Hello MySQL'";
-    $pdo->exec($sql);
+    $n = $pdo->exec($sql);
     $stmt = $pdo->prepare('SELECT * FROM Data');
     $stmt->execute(array());
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,6 +43,7 @@ foreach($results as $key => $value) {
         <p>Hello from <a href="https://jrcan.dev.netlib.re/">JrCanDev</a></p>
         <p><img src="https://www.docker.com/sites/default/files/horizontal.png"></p>
         <p>Amount = <?= $amount ?></p>
+        <p>n = <?= $n ?></p>
         <p>Results1 = <?= $results1 ?></p>
         <p>Results2 = <?= $results2 ?></p>
         <p><?php print_r($results); ?><p>
