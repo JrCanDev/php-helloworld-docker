@@ -19,7 +19,7 @@ if (count($results) == 0)  {
     $sql = "INSERT INTO Data(some_string) values 'Hello MySQL'";
     $pdo->exec($sql);
     $stmt = $pdo->prepare('SELECT * FROM Data');
-    $res = $stmt->execute(array());
+    $results = $stmt->execute(array());
 }
 
 $rows = '';
