@@ -19,7 +19,8 @@ if (count($results) == 0)  {
     $sql = "INSERT INTO Data(some_string) values 'Hello MySQL'";
     $pdo->exec($sql);
     $stmt = $pdo->prepare('SELECT * FROM Data');
-    $results = $stmt->execute(array());
+    $stmt->execute(array());
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 $rows = '';
@@ -42,6 +43,7 @@ foreach($results as $key => $value) {
         <p><img src="https://www.docker.com/sites/default/files/horizontal.png"></p>
         <p>Results1 = <?= $results1 ?></p>
         <p>Results2 = <?= $results2 ?></p>
+        <p><?php print_r($results); ?><p>
         <?= $rows ?>
     </body>
 </html>
