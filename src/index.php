@@ -17,19 +17,19 @@ $results2 = $stmt->execute(array());
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $amount = count($results);
 if (count($results) == 0) {
-    $sql = "INSERT INTO Data values 'Hello MySQL'";
+    $sql = "INSERT INTO Data(some_string) values ('Hello MySQL')";
     $n = $pdo->exec($sql);
     $stmt = $pdo->prepare('SELECT * FROM Data');
     $stmt->execute(array());
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$rows = '';
+$rows = '<table>';
 
 foreach($results as $key => $value) {
-    $row .= "<p><strong>$key</strong> {$_value['some_string']}</p>";
-    $rows[] = $row;
+    $rows .= "<tr><th> $key </th><td> {$value['some_string']} </td><td> {$value['created_at']} </td></tr>";
 }
+$rows .= '</table>';
 
 ?>
 
@@ -42,20 +42,9 @@ foreach($results as $key => $value) {
     <body>
         <p>Hello from <a href="https://jrcan.dev.netlib.re/">JrCanDev</a></p>
         <p><img src="https://www.docker.com/sites/default/files/horizontal.png"></p>
-        <p>Amount = <?= $amount ?></p>
-        <p>n = <?php var_dump($n); ?></p>
-        <p>Results1 = <?php var_dump($results1); ?></p>
-        <p>Results2 = <?= $results2 ?></p>
-        <p><?php print_r($results); ?><p>
+
         <?= $rows ?>
     </body>
 </html>
 
-
-<?php
-
-
-
-
-?>
 
