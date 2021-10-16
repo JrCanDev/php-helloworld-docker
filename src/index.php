@@ -1,6 +1,6 @@
 <?php
 // $db = mysqli_connect('database', 'test', '1234567abc', 'testdb') or die('Could not find a database server @\'database\'');
-$pdo = new PDO('mysql:host=database;dbname=testdb', 'test', '1234567abc', array( PDO::ATTR_PERSISTENT => false)) or die('cannot instantiate PDO instance');
+$pdo = new PDO('mysql:host=database;port=3306;dbname=testdb', 'test', '1234567abc') or die('cannot instantiate PDO instance');
 
 
 $sql = "CREATE TABLE IF NOT EXISTS Data (
