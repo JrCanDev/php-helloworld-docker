@@ -8,10 +8,12 @@ $sql = "CREATE TABLE IF NOT EXISTS Data (
     some_string varchar(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); ENGINE=INNODB";
 
-$pdo->exec($sql);
+$result1 = $pdo->exec($sql);
+
+
 
 $stmt = $pdo->prepare('SELECT * FROM Data');
-$stmt->execute(array());
+$results2 = $stmt->execute(array());
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if (count($results) == 0)  {
     $sql = "INSERT INTO Data(some_string) values 'Hello MySQL'";
@@ -38,7 +40,8 @@ foreach($results as $key => $value) {
     <body>
         <p>Hello from <a href="https://jrcan.dev.netlib.re/">JrCanDev</a></p>
         <p><img src="https://www.docker.com/sites/default/files/horizontal.png"></p>
-
+        <p>Results1 = <?= $results1 ?></p>
+        <p>Results2 = <?= $results2 ?></p>
         <?= $rows ?>
     </body>
 </html>
