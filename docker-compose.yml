@@ -3,7 +3,7 @@ version: '3'
 services:
 
   database:
-    image: mysql:5.7
+    image: mariadb:10.2
     container_name: ${NAME}_db
     restart: unless-stopped
     environment:
@@ -17,15 +17,15 @@ services:
       - db:/var/lib/mysql
 
   app:
-    image: ghost:4-alpine
+    image: php:7.2-apache
     container_name: ${NAME}
     build: .
     networks:
         - web
         - lan
     # Uncomment for local test
-    # ports:
-    # - "80:80"    
+    ports:
+    - "80:80"    
     labels:
         - "traefik.enable=true"
         - "traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)"
@@ -34,7 +34,7 @@ services:
     restart: always
     environment:
       DB_HOST: database
-    
+
       # see https://ghost.org/docs/config/#configuration-options
       database__client: mysql
       database__connection__host: database
