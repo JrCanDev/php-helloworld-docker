@@ -8,14 +8,11 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      MYSQL_DATABASE: 'testdb'
-      MYSQL_USER: 'test'
-      #MYSQL_PASSWORD: '1234567abc'
-      MYSQL_PASSWORD_FILE: '/run/secrets/mysql-password'
-    secrets:
-      - mysql-password  
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USERNAME}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}" 
     networks:
-      - lan
+      - web
     volumes: 
       - db:/var/lib/mysql
 
@@ -26,6 +23,9 @@ services:
     networks:
         - web
         - lan
+    # Uncomment for local test
+    # ports:
+    # - "80:80"    
     labels:
         - "traefik.enable=true"
         - "traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)"
@@ -38,9 +38,9 @@ services:
       # see https://ghost.org/docs/config/#configuration-options
       database__client: mysql
       database__connection__host: database
-      database__connection__user: 'test'
-      database__connection__password: MYSQL_PASSWORD_FILE
-      database__connection__database: 'testdb'
+      database__connection__user: "${MYSQL_USERNAME}"
+      database__connection__password: "${MYSQL_PASSWORD}"
+      database__connection__database: "${MYSQL_DATABASE}"
       url: https://tecoblog.ddns.net
       NODE_ENV: production
 

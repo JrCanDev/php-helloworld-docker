@@ -1,7 +1,8 @@
 <?php
 // $db = mysqli_connect('database', 'test', '1234567abc', 'testdb') or die('Could not find a database server @\'database\'');
-print "env is: ".getenv("MYSQL_USERNAME")."\n";
-#$pdo = new PDO('mysql:host=database;port=3306;dbname=testdb', getenv('MYSQL_USERNAME'), getenv('MYSQL_PASSWORD') or die('cannot instantiate PDO instance');
+$username = $_ENV['database__connection__user'];
+$password = $_ENV['database__connection__password'];
+$pdo = new PDO('mysql:host=database;port=3306;dbname=testdb', $username, $password) or die('cannot instantiate PDO instance');
 
 $sql = "CREATE TABLE IF NOT EXISTS Data (
     id INT AUTO_INCREMENT PRIMARY KEY,
