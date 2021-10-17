@@ -10,6 +10,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: 'testdb'
       MYSQL_USER: 'test'
+      #MYSQL_PASSWORD: '1234567abc'
       MYSQL_PASSWORD_FILE: '/run/secrets/mysql-password'
     secrets:
       - mysql-password  
