@@ -12,7 +12,7 @@ services:
       MYSQL_USER: "${MYSQL_USERNAME}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}" 
     networks:
-      - web
+      - lan
     volumes: 
       - db:/var/lib/mysql
 
