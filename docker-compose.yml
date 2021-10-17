@@ -45,7 +45,7 @@ services:
 
 secrets:
   mysql-password:
-    file: ./secrets_mysql-password.txt      
+    file: ./bd.password
 
 networks:
   web:
