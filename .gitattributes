@@ -1,1 +1,3 @@
 .env filter=git-crypt diff=git-crypt
+tres_secret.env filter=git-crypt diff=git-crypt
+
