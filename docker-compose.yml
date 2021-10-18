@@ -17,7 +17,7 @@ services:
       - db:/var/lib/mysql
 
   app:
-    image: php:7.2-nging
+    image: php:7.4-apache
     container_name: ${NAME}
     build: .
     networks:
