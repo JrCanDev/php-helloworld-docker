@@ -3,7 +3,7 @@ version: '3'
 
 services:
   app:
-    image: ghost:4-alpine
+    image: php:7.4-apache
     container_name: ${NAME}
     build: .
     networks:
