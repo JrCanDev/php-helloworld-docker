@@ -2,7 +2,7 @@
 // $db = mysqli_connect('database', 'test', '1234567abc', 'testdb') or die('Could not find a database server @\'database\'');
 $username = $_ENV['database__connection__user'];
 $password = $_ENV['database__connection__password'];
-$dbhost="localhost";
+$dbhost="mariadb.jrcandev.netlib.re";
 $pdo = new PDO('mysql:host='.$dbhost.';port=3306;dbname=samuel', $username, $password) or die('cannot instantiate PDO instance');
 
 $sql = "CREATE TABLE IF NOT EXISTS Data (
