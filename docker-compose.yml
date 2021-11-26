@@ -8,6 +8,7 @@ services:
     build: .
     networks:
         - web
+        - lan
     # Uncomment for local test
     # ports:
     # - "80:80"    
@@ -17,8 +18,18 @@ services:
         - "traefik.http.routers.${NAME}.entrypoints=websecure"
         - "traefik.http.routers.${NAME}.tls.certresolver=lets-encrypt"
     restart: always
+    environment:
+      # see https://ghost.org/docs/config/#configuration-options
+      database__client: mysql
+      database__connection__host: database
+      database__connection__user: "${MYSQL_USERNAME}"
+      database__connection__password: "${MYSQL_PASSWORD}"
+      database__connection__database: "${MYSQL_DATABASE}"
 
 
 networks:
   web:
     external: true
+
+volumes:
+  db: {}
