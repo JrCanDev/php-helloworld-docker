@@ -8,7 +8,6 @@ services:
     build: .
     networks:
         - web
-        - lan
     # Uncomment for local test
     # ports:
     # - "80:80"    
