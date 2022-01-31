@@ -6,6 +6,8 @@ services:
     image: php:7.4-apache
     container_name: ${NAME}
     build: .
+    ports:
+      - "8080:80"
     networks:
         - web
     labels:
