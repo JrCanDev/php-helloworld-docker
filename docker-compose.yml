@@ -2,22 +2,51 @@
 version: '3'
 
 services:
+
+  database:
+    image: mariadb:10.10
+    container_name: ${NAME}_db
+    restart: unless-stopped
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
+      MARIADB_DATABASE: "${MYSQL_DATABASE}"
+      MARIADB_USER: "${MYSQL_USERNAME}"
+      MARIADB_PASSWORD: "${MYSQL_PASSWORD}" 
+    networks:
+      - lan
+    volumes: 
+      - db:/var/lib/mysql
+
   app:
     image: php:7.4-apache
     container_name: ${NAME}
     build: .
     networks:
-        - web
+        - lan
+        - traefik-public  
     labels:
         - "traefik.enable=true"
+        - "traefik.docker.network=traefik-public"  
         - "traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)"
-        - "traefik.http.routers.${NAME}.entrypoints=websecure"
-        - "traefik.http.routers.${NAME}.tls.certresolver=lets-encrypt"
+        - "traefik.http.routers.${NAME}.tls=true"
+        - "traefik.http.routers.${NAME}.entrypoints=websecure"  
+        - "traefik.http.routers.${NAME}.tls.certresolver=myresolver"
+          
     restart: always
+    environment:
+      # see https://ghost.org/docs/config/#configuration-options
+      database__client: mysql
+      database__connection__host: www_db
+      database__connection__user: "${MYSQL_USERNAME}"
+      database__connection__password: "${MYSQL_PASSWORD}"
+      database__connection__database: "${MYSQL_DATABASE}"
+  
 
 volumes:
-  content:
+  db:
 
 networks:
-  web:
+  traefik-public:
     external: true
+  lan:
+    external: false    
