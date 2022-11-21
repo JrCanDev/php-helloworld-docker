@@ -35,6 +35,7 @@ services:
     restart: always
     environment:
       # see https://ghost.org/docs/config/#configuration-options
+      container__name: ${NAME}
       database__client: mysql
       database__connection__host: www_db
       database__connection__user: "${MYSQL_USERNAME}"
