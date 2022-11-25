@@ -17,6 +17,25 @@ services:
     volumes: 
       - db:/var/lib/mysql
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin 
+    container_name: ${NAME}_pma
+    restart: unless-stopped
+    environment:  
+      PMA_HOST: mysql
+      UPLOAD_LIMIT: 128M
+    labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik-public"  
+        - "traefik.http.routers.phpmyadmin.rule=Host(`${NAME}_pma.jrcandev.netlib.re`)"
+        - "traefik.http.routers.${NAME}.tls=true"
+        - "traefik.http.routers.${NAME}.entrypoints=websecure"  
+        - "traefik.http.routers.${NAME}.tls.certresolver=myresolver"
+    volumes:
+        - /sessions
+    networks:
+        - traefik-public      
+        - lan
   app:
     image: php:7.4-apache
     container_name: ${NAME}
