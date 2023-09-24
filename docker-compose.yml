@@ -4,7 +4,7 @@ version: '3'
 services:
 
   database:
-    image: mariadb:10.10
+    image: mariadb
     container_name: ${NAME}_db
     restart: unless-stopped
     environment:
@@ -21,35 +21,36 @@ services:
     image: phpmyadmin/phpmyadmin 
     container_name: ${NAME}_pma
     restart: unless-stopped
-    environment:  
-      PMA_HOST: mysql
+    environment: 
+      PMA_ABSOLUTE_URI: https://${NAME}.jrcandev.netlib.re/phpmyadmin
+      PMA_HOST: ${NAME}_db
       UPLOAD_LIMIT: 128M
     labels:
-        - "traefik.enable=true"
-        - "traefik.docker.network=traefik-public"  
-        - "traefik.http.routers.phpmyadmin.rule=Host(`${NAME}_pma.jrcandev.netlib.re`)"
-        - "traefik.http.routers.${NAME}.tls=true"
-        - "traefik.http.routers.${NAME}.entrypoints=websecure"  
-        - "traefik.http.routers.${NAME}.tls.certresolver=myresolver"
+      - traefik.enable=true  
+      - traefik.http.routers.pma_${NAME}.entrypoints=websecure
+      - traefik.http.routers.pma_${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`) && PathPrefix(`/phpmyadmin/`)
+      - traefik.http.middlewares.pmapathstrip_${NAME}.stripprefix.prefixes=/phpmyadmin
+      - traefik.http.routers.pma_${NAME}.middlewares=pmapathstrip_${NAME}@docker
+      - traefik.http.routers.pma_${NAME}.tls=true
+      - traefik.http.routers.pma_${NAME}.tls.certresolver=myresolver
     volumes:
         - /sessions
     networks:
-        - traefik-public      
+        - web      
         - lan
   app:
-    image: php:7.4-apache
+    #image: php:8.2-apache
     container_name: ${NAME}
     build: .
     networks:
         - lan
-        - traefik-public  
+        - web
     labels:
-        - "traefik.enable=true"
-        - "traefik.docker.network=traefik-public"  
-        - "traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)"
-        - "traefik.http.routers.${NAME}.tls=true"
-        - "traefik.http.routers.${NAME}.entrypoints=websecure"  
-        - "traefik.http.routers.${NAME}.tls.certresolver=myresolver"
+      - traefik.enable=true
+      - traefik.http.routers.${NAME}.entryPoints=websecure 
+      - traefik.http.routers.${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`)
+      - traefik.http.routers.${NAME}.tls=true  
+      - traefik.http.routers.${NAME}.tls.certresolver=myresolver
           
     restart: always
     environment:
@@ -60,13 +61,15 @@ services:
       database__connection__user: "${MYSQL_USERNAME}"
       database__connection__password: "${MYSQL_PASSWORD}"
       database__connection__database: "${MYSQL_DATABASE}"
-  
+    volumes:
+      - ./src:/var/www/html 
 
 volumes:
   db:
 
 networks:
-  traefik-public:
+  web:
     external: true
   lan:
-    external: false    
+    external: false
+    name: lan_${NAME}    
