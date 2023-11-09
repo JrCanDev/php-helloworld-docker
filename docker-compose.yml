@@ -3,33 +3,33 @@ version: '3'
 
 services:
 
-  database:
-    image: mariadb
-    container_name: ${NAME}_db
+  db:
+    image: postgres
+    container_name: ${NAME}_pg
     restart: unless-stopped
     environment:
-      MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
-      MARIADB_DATABASE: "${MYSQL_DATABASE}"
-      MARIADB_USER: "${MYSQL_USERNAME}"
-      MARIADB_PASSWORD: "${MYSQL_PASSWORD}" 
+      #MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
+      POSTGRES_DATABASE: "${MYSQL_DATABASE}"
+      POSTGRES_USER: "${MYSQL_USERNAME}"
+      POSTGRES_PASSWORD: "${MYSQL_PASSWORD}" 
     networks:
       - lan
     volumes: 
-      - db:/var/lib/mysql
+      - pg:/var/lib/postgresql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin 
+    image: adminer 
     container_name: ${NAME}_pma
     restart: unless-stopped
     environment: 
-      PMA_ABSOLUTE_URI: https://${NAME}.jrcandev.netlib.re/phpmyadmin
-      PMA_HOST: ${NAME}_db
+      PMA_ABSOLUTE_URI: https://${NAME}.jrcandev.netlib.re/adminer
+        #PMA_HOST: ${NAME}_db
       UPLOAD_LIMIT: 128M
     labels:
       - traefik.enable=true  
       - traefik.http.routers.pma_${NAME}.entrypoints=websecure
-      - traefik.http.routers.pma_${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`) && PathPrefix(`/phpmyadmin/`)
-      - traefik.http.middlewares.pmapathstrip_${NAME}.stripprefix.prefixes=/phpmyadmin
+      - traefik.http.routers.pma_${NAME}.rule=Host(`${NAME}.jrcandev.netlib.re`) && PathPrefix(`/adminer/`)
+      - traefik.http.middlewares.pmapathstrip_${NAME}.stripprefix.prefixes=/adminer
       - traefik.http.routers.pma_${NAME}.middlewares=pmapathstrip_${NAME}@docker
       - traefik.http.routers.pma_${NAME}.tls=true
       - traefik.http.routers.pma_${NAME}.tls.certresolver=myresolver
@@ -65,7 +65,7 @@ services:
       - ./src:/var/www/html 
 
 volumes:
-  db:
+  pg:
 
 networks:
   web:
