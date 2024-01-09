@@ -15,7 +15,7 @@ services:
     networks:
       - lan
     volumes: 
-      - pg:/var/lib/postgresql
+      - ./postgres-data:/var/lib/postgresql/data
 
   phpmyadmin:
     image: adminer 
@@ -63,9 +63,6 @@ services:
       database__connection__database: "${MYSQL_DATABASE}"
     volumes:
       - ./src:/var/www/html 
-
-volumes:
-  pg:
 
 networks:
   web:
