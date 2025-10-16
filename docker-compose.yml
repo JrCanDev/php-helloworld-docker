@@ -62,7 +62,7 @@ services:
       database__connection__password: "${MYSQL_PASSWORD}"
       database__connection__database: "${MYSQL_DATABASE}"
     volumes:
-      - ./src:/var/www/html 
+      - ./src:/usr/src/app
 
 networks:
   web:
