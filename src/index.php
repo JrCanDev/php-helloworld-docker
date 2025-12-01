@@ -10,7 +10,7 @@ $pdo = new PDO($connect, $username, $password) or die('cannot instantiate PDO in
 $sql = "CREATE TABLE IF NOT EXISTS Data (
     id INT AUTO_INCREMENT PRIMARY KEY,
     some_string varchar(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); ENGINE=INNODB";
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 $pdo->exec($sql);
 
 // INSERT
